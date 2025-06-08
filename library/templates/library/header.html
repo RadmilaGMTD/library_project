@@ -1,0 +1,8 @@
+<header>
+    <h1>Сайт студентов</h1>
+    {% if user.is_authenticated %}
+        <p>Добро пожаловать, {{ user.first_name }}!</p>
+    {% else %}
+        <p>Добро пожаловать на сайт студентов!</p>
+    {% endif %}
+</header>
