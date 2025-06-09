@@ -1,11 +1,8 @@
 from django.contrib.auth.mixins import (LoginRequiredMixin,
                                         PermissionRequiredMixin)
-from django.core.cache import cache
 from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
 from django.views.generic import DetailView, ListView, View
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
@@ -44,12 +41,7 @@ class AuthorListView(ListView):
     context_object_name = "authors"
 
     def get_queryset(self):
-        queryset = cache.get("authors_queryset")
-        if not queryset:
-            queryset = super().get_queryset()
-            cache.set("authors_queryset", queryset, 60 * 15)
-
-        return queryset
+        return super().get_queryset()
 
 
 class AuthorCreateView(LoginRequiredMixin, CreateView):
@@ -82,7 +74,6 @@ class BookUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     permission_required = "library.change_book"
 
 
-@method_decorator(cache_page(60 * 15), name="dispatch")
 class BooksListView(LoginRequiredMixin, ListView):
     model = Book
     template_name = "library/books_list.html"
@@ -93,7 +84,6 @@ class BooksListView(LoginRequiredMixin, ListView):
         return queryset.filter(publication_date__year__gt=1900)
 
 
-@method_decorator(cache_page(60 * 15), name="dispatch")
 class BookDetailView(DetailView):
     model = Book
     template_name = "library/book_detail.html"
