@@ -1,16 +1,16 @@
+from django.contrib.auth.mixins import (LoginRequiredMixin,
+                                        PermissionRequiredMixin)
+from django.core.cache import cache
 from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect
-from django.views.generic.edit import DeleteView
-from django.views.generic import DetailView
-from django.views.generic import ListView, View
-from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse_lazy
-from .models import Author, Book
-from .forms import AuthorForm, BookForm
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
-from django.core.cache import cache
+from django.views.generic import DetailView, ListView, View
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
+
+from .forms import AuthorForm, BookForm
+from .models import Author, Book
 from .services import BookService
 
 
